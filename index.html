@@ -3,12 +3,13 @@
 <title>
   Test With Dropbox
 </title>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://www.dropbox.com/static/api/dropbox-datastores-1.0-latest.js" type="text/javascript"></script>
 <script>
 $(document).ready(function(){
+	alert("here1");
 	var client = new Dropbox.Client({key: "g6ksbr5u9u2fxil"});
-
+	alert("here2");
 	client.authenticate({interactive: false}, function (error) {
 	    if (error) {
 	        alert('Authentication error: ' + error);
