@@ -108,48 +108,19 @@
         }
       }
 
-      /**
-       * Insert new file.
-       *
-       * @param {File} fileData File object to read data from.
-       * @param {Function} callback Function to call when the request is complete.
-       */
+
       function insertFile2(callback) {
-        const boundary = '-------314159265358979323846';
-        const delimiter = "\r\n--" + boundary + "\r\n";
-        const close_delim = "\r\n--" + boundary + "--";
-          var contentType = 'text/csv';
-          var metadata = {
-            'title': 'test.csv',
-            'mimeType': 'text/csv'
-          };
-
-          var text = "test,123";
-          var multipartRequestBody =
-              delimiter +
-              'Content-Type: application/json\r\n\r\n' +
-              JSON.stringify(metadata) +
-              delimiter +
-              'Content-Type: ' + contentType + '\r\n' +
-              'Content-Transfer-Encoding: base64\r\n' +
-              '\r\n' +
-              text +
-              close_delim;
-
+          gapi.client.load('drive', 'v2', function() {
           var request = gapi.client.request({
-              'path': '/upload/drive/v2/files',
-              'method': 'POST',
-              'params': {'uploadType': 'multipart'},
-              'headers': {
-                'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
-              },
-              'body': multipartRequestBody});
-          if (!callback) {
-            callback = function(file) {
-              console.log(file)
-            };
-          }
-          request.execute(callback);
+                'path': '/drive/v2/files',
+                'method': 'POST',
+                'body':{
+                    "title" : "test.txt",
+                    "description" : "Some"
+                }
+            });
+            request.execute(function(resp) { console.log(resp); });
+        });
       }
     </script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
