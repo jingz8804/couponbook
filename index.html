@@ -119,7 +119,35 @@
                     "description" : "Some"
                 }
             });
-            request.execute(function(resp) { console.log(resp); });
+            request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, "lalala")});
+        });
+      }
+
+      function gd_updateFile(fileId, text, callback) {
+
+        const boundary = '-------314159265358979323846';
+        const delimiter = "\r\n--" + boundary + "\r\n";
+        const close_delim = "\r\n--" + boundary + "--";
+
+        var contentType = "text/html";
+        var metadata = {'mimeType': contentType};
+
+        var multipartRequestBody =
+            delimiter +  'Content-Type: application/json\r\n\r\n' +
+            JSON.stringify(metadata) +
+            delimiter + 'Content-Type: ' + contentType + '\r\n' + '\r\n' +
+            text +
+            close_delim;
+
+        if (!callback) { callback = function(file) { console.log("Update Complete ",file) }; }
+
+        gapi.client.request({
+            'path': '/upload/drive/v2/files/'+fileId,
+            'method': 'PUT',
+            'params': {'fileId': fileId, 'uploadType': 'multipart'},
+            'headers': {'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'},
+            'body': multipartRequestBody,
+            callback:callback,
         });
       }
     </script>
