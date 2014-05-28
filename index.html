@@ -60,6 +60,8 @@
   
         function insertFile2(callback) {
           getApplicationDataFolderMetadata();
+          listFilesInApplicationDataFolder();
+          // insertFileInApplicationDataFolder();
           //   gapi.client.load('drive', 'v2', function() {
           //   var request = gapi.client.request({
           //         'path': '/drive/v2/files/',
@@ -67,10 +69,10 @@
           //         'body':{
           //             "title" : "test.txt",
           //             "description" : "Some",
-          //             "parents": [{'id': folderID}]
+          //             "parents": [{'id': 'appdata'}]
           //         }
           //     });
-          //     request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, folderID, "lalala")});
+          //     request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala")});
           // });
         }
   
@@ -84,7 +86,7 @@
             $('#folderID').html(resp.id);
           });
         }
-  
+
         function gd_updateFile(fileId, folderID, text, callback) {
   
           const boundary = '-------314159265358979323846';
@@ -111,6 +113,27 @@
               'body': multipartRequestBody,
               callback:callback,
           });
+        }
+
+        function listFilesInApplicationDataFolder(callback) {
+          var retrievePageOfFiles = function(request, result) {
+            request.execute(function(resp) {
+              result = result.concat(resp.items);
+              var nextPageToken = resp.nextPageToken;
+              if (nextPageToken) {
+                request = gapi.client.drive.files.list({
+                  'pageToken': nextPageToken
+                });
+                retrievePageOfFiles(request, result);
+              } else {
+                console.log(result);
+              }
+            });
+          }
+          var initialRequest = gapi.client.drive.files.list({
+            'q': '\'appdata\' in parents'
+          });
+          retrievePageOfFiles(initialRequest, []);
         }
       
       
