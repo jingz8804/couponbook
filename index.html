@@ -3,7 +3,7 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <script type="text/javascript">
       var CLIENT_ID = '425474108915-9dr4mc0pikee1n1hr5ia0fusvrg5460o.apps.googleusercontent.com';
-      var SCOPES = 'https://www.googleapis.com/auth/drive';
+      var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
 
       /**
        * Called when the client library is loaded to start the auth flow.
@@ -110,27 +110,40 @@
 
 
       function insertFile2(callback) {
+          var folderID = getApplicationDataFolderMetadata();
           gapi.client.load('drive', 'v2', function() {
           var request = gapi.client.request({
-                'path': '/drive/v2/files',
+                'path': '/drive/v2/files/',
                 'method': 'POST',
                 'body':{
                     "title" : "test.txt",
-                    "description" : "Some"
+                    "description" : "Some",
+                    "parents": [{'id': folderID}]
                 }
             });
-            request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, "lalala")});
+            request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, folderID, "lalala")});
         });
       }
 
-      function gd_updateFile(fileId, text, callback) {
+      function getApplicationDataFolderMetadata() {
+        var request = gapi.client.drive.files.get({
+          'fileId': 'appdata'
+        });
+        var appdataFoldID;
+        request.execute(function(resp) {
+          appdataFoldID = resp.id;
+        });
+        return appdataFoldID;
+      }
+
+      function gd_updateFile(fileId, folderID, text, callback) {
 
         const boundary = '-------314159265358979323846';
         const delimiter = "\r\n--" + boundary + "\r\n";
         const close_delim = "\r\n--" + boundary + "--";
 
         var contentType = "text/html";
-        var metadata = {'mimeType': contentType};
+        var metadata = {'mimeType': contentType, 'parents': [{'id': folderID}]};
 
         var multipartRequestBody =
             delimiter +  'Content-Type: application/json\r\n\r\n' +
