@@ -61,8 +61,7 @@
 
 
       function insertFile2(callback) {
-          var folderID = getApplicationDataFolderMetadata();
-          console.log(folderID);
+        printApplicationDataFolderMetadata();
         //   gapi.client.load('drive', 'v2', function() {
         //   var request = gapi.client.request({
         //         'path': '/drive/v2/files/',
@@ -77,16 +76,14 @@
         // });
       }
 
-      function getApplicationDataFolderMetadata() {
+      function printApplicationDataFolderMetadata() {
         var request = gapi.client.drive.files.get({
           'fileId': 'appdata'
         });
-        var appdataFoldID;
         request.execute(function(resp) {
-          appdataFoldID = resp.id;
+          console.log('Id: ' + resp.id);
+          console.log('Title: ' + resp.title);
         });
-        console.log(appdataFoldID);
-        return appdataFoldID;
       }
 
       function gd_updateFile(fileId, folderID, text, callback) {
