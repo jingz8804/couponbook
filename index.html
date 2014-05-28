@@ -5,7 +5,6 @@
       var CLIENT_ID = '425474108915-9dr4mc0pikee1n1hr5ia0fusvrg5460o.apps.googleusercontent.com';
       var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
       
-      var appdataFolderID;
       /**
        * Called when the client library is loaded to start the auth flow.
        */
@@ -82,11 +81,13 @@
         var request = gapi.client.drive.files.get({
           'fileId': 'appdata'
         });
-        request.execute(function(resp) {
+        var id;
+        request.execute(function(resp, id) {
           console.log('Id: ' + resp.id);
           console.log('Title: ' + resp.title);
-          appdataFolderID = resp.id;
+          id = resp.id;
         });
+        console.log(id);
       }
 
       function gd_updateFile(fileId, folderID, text, callback) {
