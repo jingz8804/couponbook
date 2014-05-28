@@ -4,13 +4,13 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
     <script type="text/javascript">
+      var CLIENT_ID = '425474108915-9dr4mc0pikee1n1hr5ia0fusvrg5460o.apps.googleusercontent.com';
+      var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
       $(document).ready(function(){
-        var CLIENT_ID = '425474108915-9dr4mc0pikee1n1hr5ia0fusvrg5460o.apps.googleusercontent.com';
-        var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
-        
         handleClientLoad();
-        
-        function handleClientLoad() {
+      });
+      
+      function handleClientLoad() {
           window.setTimeout(checkAuth, 1);
         }
   
@@ -116,7 +116,6 @@
               callback:callback,
           });
         }
-      });
       
       
       /**
