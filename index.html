@@ -4,7 +4,8 @@
     <script type="text/javascript">
       var CLIENT_ID = '425474108915-9dr4mc0pikee1n1hr5ia0fusvrg5460o.apps.googleusercontent.com';
       var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
-
+      
+      var appdataFolderID;
       /**
        * Called when the client library is loaded to start the auth flow.
        */
@@ -61,8 +62,8 @@
 
 
       function insertFile2(callback) {
-        var id = printApplicationDataFolderMetadata();
-        console.log(id);
+        getApplicationDataFolderMetadata();
+        console.log(appdataFolderID);
         //   gapi.client.load('drive', 'v2', function() {
         //   var request = gapi.client.request({
         //         'path': '/drive/v2/files/',
@@ -77,16 +78,14 @@
         // });
       }
 
-      function printApplicationDataFolderMetadata() {
+      function getApplicationDataFolderMetadata() {
         var request = gapi.client.drive.files.get({
           'fileId': 'appdata'
         });
-        var id;
         request.execute(function(resp) {
           console.log('Id: ' + resp.id);
           console.log('Title: ' + resp.title);
-          id = resp.id;
-          return id;
+          appdataFolderID = resp.id;
         });
       }
 
