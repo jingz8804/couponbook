@@ -60,8 +60,6 @@
   
         function insertFile2(callback) {
           getApplicationDataFolderMetadata();
-          listFilesInApplicationDataFolder();
-          // insertFileInApplicationDataFolder();
           //   gapi.client.load('drive', 'v2', function() {
           //   var request = gapi.client.request({
           //         'path': '/drive/v2/files/',
@@ -74,6 +72,9 @@
           //     });
           //     request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala")});
           // });
+          // listFilesInApplicationDataFolder();
+          // deleteFile('1jS3ruw4z867U17buMYmPc9_yaGQQAfU21pm9yASyaP4Q');
+          listFilesInApplicationDataFolder();
         }
   
         function getApplicationDataFolderMetadata() {
@@ -126,7 +127,11 @@
                 });
                 retrievePageOfFiles(request, result);
               } else {
-                console.log(result);
+                // console.log(result);
+                result.forEach(function(element){
+                  console.log(element)
+                })
+                
               }
             });
           }
@@ -137,6 +142,14 @@
         }
       
       
+      function deleteFile(fileId) {
+        var request = gapi.client.drive.files.delete({
+          'fileId': fileId
+        });
+        request.execute(function(resp) { 
+            console.log(resp)
+        });
+      }
       /**
        * Called when the client library is loaded to start the auth flow.
        */
