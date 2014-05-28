@@ -80,9 +80,12 @@
         var request = gapi.client.drive.files.get({
           'fileId': 'appdata'
         });
+        var id;
         request.execute(function(resp) {
           console.log('Id: ' + resp.id);
           console.log('Title: ' + resp.title);
+          id = resp.id;
+          console.log(id);
         });
       }
 
