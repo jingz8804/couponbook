@@ -1,13 +1,71 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/application.js"></script>
+    <script type="text/javascript" src="js/mindmup-editabletable.js"></script>
+    <script type="text/javascript" src="js/accounting.min.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
   </head>
   <body>
-    <input type="file" id="filePicker" style="display: none" />
-    <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
-    <div id="folderID">Unknown</div>
+    <div class="container" role="main" style="margin-top:50px;">
+      <input type="file" id="filePicker" style="display: none" />
+      <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
+      <div id="folderID">Unknown</div>
+      <div id="list-coupon" class="content scaffold-list" role="main">
+        <div class="row">
+          <div class="col-md-9">
+            <h1>My Coupons</h1>
+          </div>
+        </div>
+        <div id="msg" class="alert hide"></div>
+        <div class="col-md-12">
+          <table id="coupon" class="table table-condensed table-hover data">
+            <thead>
+              <tr>
+                <th class="attribute">Description</th>
+                <th class="attribute">Value</th>
+                <th class="attribute">Annual Contribution</th>
+                <th class="attribute">Annual Matching</th>
+                <th class="attribute">Rate</th>
+                <th class="attribute">Type</th>
+                <th class="attribute">Allocation</th>
+                <th class="transparentBorder"></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-md-2 col-md-offset-10">
+          <a href="#" class="btn btn-default btn-primary btn-block add-empty" data-target="coupon">Add empty row</a>
+        </div>
+      </div>
+
+      <!-- Modal Dialog -->
+      <div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Delete Permanently</h4>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure about this ?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="confirm">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
