@@ -138,28 +138,34 @@ function attacheEvents(tableID){
     			}
     			
                 // here we should replace it with the drive api function
-    			// $.ajax({
-    			// 	url: $('#'+tableID+'Save').attr('href'),
-    			// 	data: obj,
-    			// 	dataType: 'json',
-    			// 	success: function(data){
-    			// 		if(data['status'] === true) {
-       //  					currentRow.removeClass('newRow');
-       //  					currentRow.find('td').each(function(){
-       //  						$(this).attr('data-pk', data['id']);
-       //  					});
-    			// 			$('.add-empty[data-target='+tableID+']').removeAttr("disabled");
-    			// 			var deleteLink = $('#'+tableID+'DeleteLink').attr('href');
-    			// 			var deleteButton = '<form action="' + deleteLink + '/' + data['id'] +'" method="post" style="display:inline"><input type="hidden" name="_method" value="DELETE" id="_method">' +
-	      //          			'<a href="#" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Assets" data-message="Are you sure you want to delete this asset?"><span class="glyphicon glyphicon-trash"></span></a>' +
-	      //          			'</form>';
-    			// 			var actionTD = currentRow.find('td.actions').first();
-    			// 			actionTD.empty();
-    			//             actionTD.append(deleteButton);
-    			//             $('a[data-target='+tableID+']').focus(); // in case they need to add another
-       //  				};
-    			// 	}
-    			// });
+                // assume that the user is authenticated
+                gapi.client.load('drive', 'v2', function() {
+                    var request = gapi.client.request({
+                        'path': '/drive/v2/files/',
+                        'method': 'POST',
+                        'body':{
+                            "title" : "test.txt",
+                            "description" : values.join(),
+                            "parents": [{'id': 'appdata'}]
+                        }
+                    });
+                    request.execute(function(resp) { 
+                        console.log(resp); 
+                        gd_updateFile(resp.id, 'appdata', values.join());
+
+                        currentRow.removeClass('newRow');
+                        currentRow.find('td').each(function(){
+                            $(this).attr('data-pk', resp.id);
+                        });
+                        $('.add-empty[data-target='+tableID+']').removeAttr("disabled");
+                        
+                        // var deleteButton = '<a href="#" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Assets" data-message="Are you sure you want to delete this asset?"><span class="glyphicon glyphicon-trash"></span></a>';
+                        // var actionTD = currentRow.find('td.actions').first();
+                        // actionTD.empty();
+                        // actionTD.append(deleteButton);
+                        // $('a[data-target='+tableID+']').focus(); // in case they need to add another
+                    });
+                });
     		}
     	}else{
     		var name = $(this).attr('data-name');
@@ -175,16 +181,6 @@ function attacheEvents(tableID){
 			}
     		var obj = {name: name, value: value, pk: id};
             // replace with the drive api
-   //  		$.ajax({
-			// 	url: $('#'+tableID+'Update').attr('href'),
-			// 	data: obj,
-			// 	dataType: 'json',
-			// 	success: function(data){
-			// 		if(data['status'] === true) {
-						
-   //  				};
-			// 	}
-			// });
     	}
     });
     
