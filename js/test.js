@@ -1,7 +1,8 @@
 $(document).ready(function() {
 	$(".datepicker" ).datepicker();
 	
-	$('table').each(function(){ // for each table on the page, do the sam
+	$('table').each(function(){ // for each table on the page, do the same
+        // listAllCoupons(); // here we assume that the user is logged in. In fact we should check the loggin status here
 		var tid = $(this).attr('id');
 		$(this).editableTableWidget();
 		attacheEvents(tid);
@@ -156,14 +157,15 @@ function attacheEvents(tableID){
                         currentRow.removeClass('newRow');
                         currentRow.find('td').each(function(){
                             $(this).attr('data-pk', resp.id);
+                            $(this).closest('tr').attr('data-pk', resp.id);
                         });
                         $('.add-empty[data-target='+tableID+']').removeAttr("disabled");
                         
-                        // var deleteButton = '<a href="#" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Assets" data-message="Are you sure you want to delete this asset?"><span class="glyphicon glyphicon-trash"></span></a>';
-                        // var actionTD = currentRow.find('td.actions').first();
-                        // actionTD.empty();
-                        // actionTD.append(deleteButton);
-                        // $('a[data-target='+tableID+']').focus(); // in case they need to add another
+                        var deleteButton = '<a href="#" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Coupon" data-id="'+resp.id+'" data-message="Are you sure you want to delete this coupon?"><span class="glyphicon glyphicon-trash"></span></a>';
+                        var actionTD = currentRow.find('td.actions').first();
+                        actionTD.empty();
+                        actionTD.append(deleteButton);
+                        $('a[data-target='+tableID+']').focus(); // in case they need to add another
                     });
                 });
     		}
@@ -189,15 +191,19 @@ function attacheEvents(tableID){
 	      $(this).find('.modal-body p').text($message);
 	      $title = $(e.relatedTarget).attr('data-title');
 	      $(this).find('.modal-title').text($title);
-	
-	      // Pass form reference to modal for submission on yes/ok
-	      var form = $(e.relatedTarget).closest('form');
-	      $(this).find('.modal-footer #confirm').data('form', form);
+	      
+          $dataid = $(e.relatedTarget).attr('data-id');
+	      $(this).find('.modal-footer #confirm').data('dataid', $dataid);
 	  });
 	
 	  // Form confirm (yes/ok) handler, submits form
 	  $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
-	      $(this).data('form').submit();
+	      var couponid = $(this).data('dataid');
+          // then we delete the file and close the modal
+          deleteFile(couponid, function(file){
+            $('#coupon').find('tr[data-pk='+couponid+']').first().remove();
+            $('#confirmDelete').modal('hide');
+          });
 	  });
 }
 

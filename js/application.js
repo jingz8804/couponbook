@@ -3,6 +3,7 @@ var SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
 
 function handleClientLoad() {
     window.setTimeout(checkAuth, 1);
+    // getApplicationDataFolderMetadata();
   }
 
   /**
@@ -28,6 +29,9 @@ function handleClientLoad() {
       // Access token has been successfully retrieved, requests can be sent to the API.
       filePicker.style.display = 'block';
       filePicker.onchange = uploadFile;
+      initializeAPI();
+      alert("initialized!");
+      // listFilesInApplicationDataFolder();
     } else {
       // No access token could be retrieved, show the button to start the authorization flow.
       authButton.style.display = 'block';
@@ -39,37 +43,41 @@ function handleClientLoad() {
     }
   }
 
+  function initializeAPI(){
+    gapi.client.load('drive', 'v2', listFilesInApplicationDataFolder);
+  }
+
   /**
    * Start the file upload.
    *
    * @param {Object} evt Arguments from the file selector.
    */
   function uploadFile(evt) {
-    gapi.client.load('drive', 'v2', function() {
-      var file = evt.target.files[0];
+     var file = evt.target.files[0];
       // insertFile(file);
       insertFile2();
-    });
   }
 
 
   function insertFile2(callback) {
     getApplicationDataFolderMetadata();
+
+      var request = gapi.client.request({
+            'path': '/drive/v2/files/',
+            'method': 'POST',
+            'body':{
+                "title" : "test.txt",
+                "description" : "lalala",
+                "parents": [{'id': 'appdata'}]
+            }
+        });
+        request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala", listFilesInApplicationDataFolder)});
+
     //   gapi.client.load('drive', 'v2', function() {
-    //   var request = gapi.client.request({
-    //         'path': '/drive/v2/files/',
-    //         'method': 'POST',
-    //         'body':{
-    //             "title" : "test.txt",
-    //             "description" : "Some",
-    //             "parents": [{'id': 'appdata'}]
-    //         }
-    //     });
-    //     request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala")});
+    
     // });
     // listFilesInApplicationDataFolder();
     // deleteFile('1jS3ruw4z867U17buMYmPc9_yaGQQAfU21pm9yASyaP4Q');
-    listFilesInApplicationDataFolder();
   }
 
   function getApplicationDataFolderMetadata() {
@@ -122,11 +130,11 @@ function handleClientLoad() {
           });
           retrievePageOfFiles(request, result);
         } else {
-          // console.log(result);
-          result.forEach(function(element){
-            console.log(element)
-          })
-          
+          if(result !== undefined && result.length > 0){
+            result.forEach(function(element){
+              console.log(element.description);
+            })
+          }
         }
       });
     }
@@ -137,11 +145,9 @@ function handleClientLoad() {
   }
 
 
-function deleteFile(fileId) {
+function deleteFile(fileId, callback) {
   var request = gapi.client.drive.files.delete({
     'fileId': fileId
   });
-  request.execute(function(resp) { 
-      console.log(resp)
-  });
+  request.execute(callback);
 }
