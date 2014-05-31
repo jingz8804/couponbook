@@ -132,8 +132,15 @@ function handleClientLoad() {
         } else {
           if(result !== undefined && result.length > 0){
             result.forEach(function(element){
-              console.log(element.description);
-            })
+              var description = element.description
+              console.log(description);
+              var data = description.split(',');
+              if(data.length > 1){
+                appendNewRowWithData(data, element.id);
+              }
+            });
+            $('#coupon').editableTableWidget();
+            attacheEvents('coupon');
           }
         }
       });

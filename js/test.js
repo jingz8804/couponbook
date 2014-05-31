@@ -225,3 +225,27 @@ function createNewRow(tableID){
     newRow += '</tr>';
     return newRow;
 }
+
+function appendNewRowWithData(data, dataid){
+    var newRow = createNewRow('coupon');
+    $('#coupon').find('tbody').append(newRow);
+    newRow = $('#coupon').find('tr.newRow').first();
+    // update the delete button
+    var deleteButton = '<a href="#" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Coupon" data-id="'+dataid+'" data-message="Are you sure you want to delete this coupon?"><span class="glyphicon glyphicon-trash"></span></a>';
+    var actionTD = newRow.find('td.actions').first();
+    actionTD.empty();
+    actionTD.append(deleteButton);
+
+    // update the data
+    newRow.attr('data-pk', dataid);
+    newRow.find('td').each(function(index){
+        if($(this).hasClass('select')){
+            $(this).find('select').first().val(data[index]);
+        }else if($(this).hasClass('date')){
+            $(this).find('input').first().datepicker('setDate', data[index]);
+        }else{
+            $(this).html(data[index]);
+        }
+    });
+    newRow.removeClass('newRow');
+}
