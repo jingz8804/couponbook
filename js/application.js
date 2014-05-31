@@ -62,16 +62,16 @@ function handleClientLoad() {
   function insertFile2(callback) {
     getApplicationDataFolderMetadata();
 
-      var request = gapi.client.request({
-            'path': '/drive/v2/files/',
-            'method': 'POST',
-            'body':{
-                "title" : "test.txt",
-                "description" : "lalala",
-                "parents": [{'id': 'appdata'}]
-            }
-        });
-        request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala", listFilesInApplicationDataFolder)});
+    var request = gapi.client.request({
+          'path': '/drive/v2/files/',
+          'method': 'POST',
+          'body':{
+              "title" : "test.txt",
+              "description" : "lalala",
+              "parents": [{'id': 'appdata'}]
+          }
+      });
+      request.execute(function(resp) { console.log(resp); gd_updateFile(resp.id, 'appdata', "lalala", listFilesInApplicationDataFolder)});
 
     //   gapi.client.load('drive', 'v2', function() {
     
@@ -98,7 +98,7 @@ function handleClientLoad() {
     const close_delim = "\r\n--" + boundary + "--";
 
     var contentType = "text/html";
-    var metadata = {'mimeType': contentType, 'parents': [{'id': folderID}]};
+    var metadata = {'mimeType': contentType, 'parents': [{'id': folderID}], 'description':text};
 
     var multipartRequestBody =
         delimiter +  'Content-Type: application/json\r\n\r\n' +

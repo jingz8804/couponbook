@@ -170,19 +170,34 @@ function attacheEvents(tableID){
                 });
     		}
     	}else{
-    		var name = $(this).attr('data-name');
-    		var id = $(this).attr('data-pk');
-    		var value;
-			if($(this).hasClass('select')){
-				value = $(this).find('select:first').val();
-			}else if($(this).hasClass('date')){
-				value = $(this).find('input:first').val();
-			}else{
-				value = $(this).attr("data-value");
-				if(!value) value = $(this).html();
-			}
-    		var obj = {name: name, value: value, pk: id};
+   //  		var name = $(this).attr('data-name');
+   //  		var id = $(this).attr('data-pk');
+   //  		var value;
+			// if($(this).hasClass('select')){
+			// 	value = $(this).find('select:first').val();
+			// }else if($(this).hasClass('date')){
+			// 	value = $(this).find('input:first').val();
+			// }else{
+			// 	value = $(this).attr("data-value");
+			// 	if(!value) value = $(this).html();
+			// }
+   //  		var obj = {name: name, value: value, pk: id};
             // replace with the drive api
+            var row = $(this).closest('tr');
+            var id = row.attr('data-pk');
+            var data = [];
+            row.find('td:not(.actions)').each(function(index){
+                if($(this).hasClass('select')){
+                    value = $(this).find('select:first').val();
+                }else if($(this).hasClass('date')){
+                    value = $(this).find('input:first').val();
+                }else{
+                    value = $(this).attr("data-value");
+                    if(!value) value = $(this).html();
+                }
+                data.push(value);
+            });
+            gd_updateFile(id, 'appdata', data.join(','));
     	}
     });
     
