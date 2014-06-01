@@ -102,7 +102,7 @@ function attacheEvents(tableID){
         
         var completeLen;
         if(tableID === 'coupon'){
-        	completeLen = 7;
+        	completeLen = 8;
         }
     	if($(this).closest('tr').hasClass('newRow')){
     		// check all cells. If they are all filled, post data to the server 
@@ -170,18 +170,6 @@ function attacheEvents(tableID){
                 });
     		}
     	}else{
-   //  		var name = $(this).attr('data-name');
-   //  		var id = $(this).attr('data-pk');
-   //  		var value;
-			// if($(this).hasClass('select')){
-			// 	value = $(this).find('select:first').val();
-			// }else if($(this).hasClass('date')){
-			// 	value = $(this).find('input:first').val();
-			// }else{
-			// 	value = $(this).attr("data-value");
-			// 	if(!value) value = $(this).html();
-			// }
-   //  		var obj = {name: name, value: value, pk: id};
             // replace with the drive api
             var row = $(this).closest('tr');
             var id = row.attr('data-pk');
@@ -232,6 +220,7 @@ function createNewRow(tableID){
         newRow += '<td class="rate" data-name="rate"></td>';
         newRow += '<td class="select" data-name="type" data-editable="no"><select><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></td>';
         newRow += '<td class="select lastCell" data-name="allocation" data-editable="no"><select><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></td>';
+        newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date"></td>';
     }
 //    newRow += '<td class="date" data-name="date"><input type="text" class="datepicker" placeholder="date of birth"></td>'; 
     newRow += '<td class="transparentBorder actions" data-editable="no">' +
@@ -252,6 +241,7 @@ function appendNewRowWithData(data, dataid){
     actionTD.append(deleteButton);
 
     // update the data
+    $(".datepicker" ).datepicker();
     newRow.attr('data-pk', dataid);
     newRow.find('td').each(function(index){
         if($(this).hasClass('select')){

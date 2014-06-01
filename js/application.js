@@ -132,11 +132,17 @@ function handleClientLoad() {
         } else {
           if(result !== undefined && result.length > 0){
             result.forEach(function(element){
-              var description = element.description
-              console.log(description);
-              var data = description.split(',');
-              if(data.length > 1){
-                appendNewRowWithData(data, element.id);
+              if(element !== undefined){
+                var description = element.description
+                console.log(description);
+                var data = description.split(',');
+                if(data.length == 8){
+                  appendNewRowWithData(data, element.id);
+                }else{
+                  deleteFile(element.id, function(resp){
+                    console.log(resp);
+                  })
+                }
               }
             });
             $('#coupon').editableTableWidget();
