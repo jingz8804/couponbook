@@ -25,6 +25,26 @@ $(document).ready(function() {
     });
   });
 
+var currencyFormat = {
+    symbol: "$",
+    precision: 2,
+    thousand: ",",
+    format: {
+        pos : "%s%v",
+        neg : "-%s%v"
+    }
+};
+
+var rateFormat = {
+    symbol: "%",
+    precision: 2,
+    thousand: ",",
+    format: {
+        pos : "%v%s",
+        neg : "-%v%s"
+    }
+};   
+
 function attacheEvents(tableID){
 	$("#"+tableID+' .datepicker').datepicker();
 	
@@ -72,29 +92,13 @@ function attacheEvents(tableID){
       // for currency and percentage, change the display but save the real value in an attribute data-value
         if($(this).hasClass('currency')){
         	var value = accounting.unformat(newValue);
-        	var formatedText = accounting.formatMoney(value,{
-        		symbol: "$",
-        		precision: 2,
-        		thousand: ",",
-        		format: {
-        			pos : "%s%v",
-        			neg : "-%s%v"
-        		}
-        	});
+        	var formatedText = accounting.formatMoney(value,currencyFormat);
         	$(this).html(formatedText);
         	$(this).attr("data-value", value);
         }else if($(this).hasClass('rate')){
         	newValue = newValue.replace('%','');
         	var value = accounting.unformat(newValue);
-        	var formatedText = accounting.formatMoney(value,{
-        		symbol: "%",
-        		precision: 2,
-        		thousand: ",",
-        		format: {
-        			pos : "%v%s",
-        			neg : "-%v%s"
-        		}
-        	});
+        	var formatedText = accounting.formatMoney(value,rateFormat);
         	$(this).html(formatedText);
         	$(this).attr("data-value", value);
         }
@@ -125,18 +129,18 @@ function attacheEvents(tableID){
     			}
     		});
     		if(values.length == completeLen){
-    			var obj;
-    			if(tableID == 'coupon'){
-    				obj = {
-        					description: values[0],
-        					value: values[1],
-        					contribution: values[2],
-        					matching: values[3],
-        					rate: values[4],
-        					type: values[5],
-        					allocation: values[6]
-        			};
-    			}
+    			// var obj;
+    			// if(tableID == 'coupon'){
+    			// 	obj = {
+       //  					description: values[0],
+       //  					value: values[1],
+       //  					contribution: values[2],
+       //  					matching: values[3],
+       //  					rate: values[4],
+       //  					type: values[5],
+       //  					allocation: values[6]
+       //  			};
+    			// }
     			
                 // here we should replace it with the drive api function
                 // assume that the user is authenticated
@@ -248,6 +252,14 @@ function appendNewRowWithData(data, dataid){
             $(this).find('select').first().val(data[index]);
         }else if($(this).hasClass('date')){
             $(this).find('input').first().datepicker('setDate', data[index]);
+        }else if($(this).hasClass('currency')){
+            var formatedText = accounting.formatMoney(data[index],currencyFormat);
+            $(this).html(formatedText);
+            $(this).attr("data-value", data[index]);
+        }else if($(this).hasClass('rate')){
+            var formatedText = accounting.formatMoney(data[index],rateFormat);
+            $(this).html(formatedText);
+            $(this).attr("data-value", data[index]);
         }else{
             $(this).html(data[index]);
         }
