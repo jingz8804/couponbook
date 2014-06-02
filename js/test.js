@@ -35,6 +35,16 @@ var currencyFormat = {
     }
 };
 
+var numberFormat = {
+    symbol: "",
+    precision: 0,
+    thousand: ",",
+    format: {
+        pos : "%s%v",
+        neg : "-%s%v"
+    }
+};
+
 var rateFormat = {
     symbol: "%",
     precision: 2,
@@ -70,6 +80,8 @@ function attacheEvents(tableID){
       }else if($(this).hasClass('rate')){
     	  if(!!newValue.match(/^[\$\-%]+$/)) return false;
     	  return !!newValue.match(/(?=.)^\-?(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)?(\.[0-9]{0,2})?%?$/);
+      }else if($(this).hasClass('numbers')){
+        return !!newValue.match(/^(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)+$/);
       }
       if (newValue.length === 0) { 
         return false; // mark cell as invalid 
@@ -101,6 +113,12 @@ function attacheEvents(tableID){
         	var formatedText = accounting.formatMoney(value,rateFormat);
         	$(this).html(formatedText);
         	$(this).attr("data-value", value);
+        }else if($(this).hasClass('numbers')){
+            newValue = newValue.replace('%','');
+            var value = accounting.unformat(newValue);
+            var formatedText = accounting.formatMoney(value,numberFormat);
+            $(this).html(formatedText);
+            $(this).attr("data-value", value);
         }
     	
         
@@ -189,7 +207,7 @@ function attacheEvents(tableID){
                 }
                 data.push(value);
             });
-            gd_updateFile(id, 'appdata', data.join(','));
+            gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
     	}
     });
     
