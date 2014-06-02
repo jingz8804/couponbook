@@ -135,8 +135,8 @@ function handleClientLoad() {
               if(element !== undefined){
                 var description = element.description
                 console.log(description);
-                var data = description.split(',');
-                if(data.length == 8){
+                var data = description.split('_MiaoMiao_');
+                if(data.length == 4){
                   appendNewRowWithData(data, element.id);
                 }else{
                   deleteFile(element.id, function(resp){

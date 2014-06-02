@@ -71,7 +71,7 @@ function attacheEvents(tableID){
     	  if(!!newValue.match(/^[\$\-%]+$/)) return false;
     	  return !!newValue.match(/(?=.)^\-?(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)?(\.[0-9]{0,2})?%?$/);
       }
-      if (newValue.length === 0 || newValue.length > 8) { 
+      if (newValue.length === 0) { 
         return false; // mark cell as invalid 
       }
     });
@@ -106,7 +106,7 @@ function attacheEvents(tableID){
         
         var completeLen;
         if(tableID === 'coupon'){
-        	completeLen = 8;
+        	completeLen = 4;
         }
     	if($(this).closest('tr').hasClass('newRow')){
     		// check all cells. If they are all filled, post data to the server 
@@ -124,7 +124,7 @@ function attacheEvents(tableID){
     			}else{
     				value = $(this).html();
     			}
-    			if(value !== '' && value !== '1' && value !== undefined){
+    			if(value !== '' && value !== undefined){
     				values.push(value);
     			}
     		});
@@ -150,13 +150,13 @@ function attacheEvents(tableID){
                         'method': 'POST',
                         'body':{
                             "title" : "test.txt",
-                            "description" : values.join(),
+                            "description" : values.join('_MiaoMiao_'),
                             "parents": [{'id': 'appdata'}]
                         }
                     });
                     request.execute(function(resp) { 
                         console.log(resp); 
-                        gd_updateFile(resp.id, 'appdata', values.join());
+                        gd_updateFile(resp.id, 'appdata', values.join('_MiaoMiao_'));
 
                         currentRow.removeClass('newRow');
                         currentRow.find('td').each(function(){
@@ -218,12 +218,8 @@ function createNewRow(tableID){
     var newRow = '<tr class="newRow">';
     if(tableID === 'coupon'){
     	newRow += '<td data-name="description"></td>';
-        newRow += '<td class="currency" data-name="value"></td>';
-        newRow += '<td class="currency" data-name="contribution"></td>';
-        newRow += '<td class="currency" data-name="matching"></td>';
-        newRow += '<td class="rate" data-name="rate"></td>';
-        newRow += '<td class="select" data-name="type" data-editable="no"><select><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></td>';
-        newRow += '<td class="select lastCell" data-name="allocation" data-editable="no"><select><option value="mercedes">Mercedes</option><option value="audi">Audi</option></select></td>';
+        newRow += '<td class="numbers" data-name="amount"></td>';
+        newRow += '<td class="string" data-name="saving"></td>';
         newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date"></td>';
     }
 //    newRow += '<td class="date" data-name="date"><input type="text" class="datepicker" placeholder="date of birth"></td>'; 

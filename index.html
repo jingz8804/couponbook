@@ -14,7 +14,7 @@
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
   </head>
   <body>
-    <div class="container" role="main" style="margin-top:50px;">
+    <div class="container" role="main" style="margin-top:50px;width: 1530px;">
       <input type="file" id="filePicker" style="display: none" />
       <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
       <div id="folderID">Unknown</div>
@@ -29,15 +29,11 @@
           <table id="coupon" class="table table-condensed table-hover data">
             <thead>
               <tr>
-                <th class="attribute">Description</th>
-                <th class="attribute">Value</th>
-                <th class="attribute">Annual Contribution</th>
-                <th class="attribute">Annual Matching</th>
-                <th class="attribute">Rate</th>
-                <th class="attribute">Type</th>
-                <th class="attribute">Allocation</th>
-                <th class="attribute">Expiration Date</th>
-                <th class="transparentBorder"></th>
+                <th class="attribute col-sm-2">Description</th>
+                <th class="attribute col-sm-2">Amount</th>
+                <th class="attribute col-sm-4">Saving</th>
+                <th class="attribute col-sm-2">Expiration Date</th>
+                <th class="transparentBorder col-sm-2"></th>
               </tr>
             </thead>
             <tbody>
