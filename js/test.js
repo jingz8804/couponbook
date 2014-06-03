@@ -261,7 +261,7 @@ function appendNewRowWithData(data, dataid){
     // update the data
     $(".datepicker" ).datepicker();
     newRow.attr('data-pk', dataid);
-    newRow.find('td').each(function(index){
+    newRow.find('td:not(.actions)').each(function(index){
         if($(this).hasClass('select')){
             $(this).find('select').first().val(data[index]);
         }else if($(this).hasClass('date')){
@@ -279,4 +279,12 @@ function appendNewRowWithData(data, dataid){
         }
     });
     newRow.removeClass('newRow');
+}
+
+function parseDate(dateStr){
+    var items = dateStr.split('/');
+    var month = parseInt(items[0]),
+        day = parseInt(items[1]),
+        year = parseInt(items[2]);
+    return new Date(year, month - 1, day);
 }

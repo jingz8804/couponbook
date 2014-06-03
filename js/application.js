@@ -131,13 +131,15 @@ function handleClientLoad() {
           retrievePageOfFiles(request, result);
         } else {
           if(result !== undefined && result.length > 0){
+            var coupons = [];
             result.forEach(function(element){
               if(element !== undefined){
-                var description = element.description
-                console.log(description);
+                var description = element.description;
                 var data = description.split('_MiaoMiao_');
                 if(data.length == 4){
-                  appendNewRowWithData(data, element.id);
+                  data[3] = parseDate(data[3])
+                  data[4] = element.id;
+                  coupons.push(data);
                 }else{
                   deleteFile(element.id, function(resp){
                     console.log(resp);
@@ -145,6 +147,26 @@ function handleClientLoad() {
                 }
               }
             });
+            coupons.sort(function(a, b){
+              return b[3] - a[3];
+            });
+            coupons.forEach(function(element){
+              appendNewRowWithData(element, element[4]);
+            });
+            // result.forEach(function(element){
+            //   if(element !== undefined){
+            //     var description = element.description;
+            //     console.log(description);
+            //     var data = description.split('_MiaoMiao_');
+            //     if(data.length == 4){
+            //       appendNewRowWithData(data, element.id);
+            //     }else{
+            //       deleteFile(element.id, function(resp){
+            //         console.log(resp);
+            //       })
+            //     }
+            //   }
+            // });
             $('#coupon').editableTableWidget();
             attacheEvents('coupon');
           }
