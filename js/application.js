@@ -153,20 +153,6 @@ function handleClientLoad() {
             coupons.forEach(function(element){
               appendNewRowWithData(element, element[4]);
             });
-            // result.forEach(function(element){
-            //   if(element !== undefined){
-            //     var description = element.description;
-            //     console.log(description);
-            //     var data = description.split('_MiaoMiao_');
-            //     if(data.length == 4){
-            //       appendNewRowWithData(data, element.id);
-            //     }else{
-            //       deleteFile(element.id, function(resp){
-            //         console.log(resp);
-            //       })
-            //     }
-            //   }
-            // });
             $('#coupon').editableTableWidget();
             attacheEvents('coupon');
           }

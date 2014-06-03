@@ -23,6 +23,28 @@ $(document).ready(function() {
   		  $('.add-empty[data-target='+tableID+']').removeAttr("disabled");
   	  });
     });
+
+    $("#export").click(function(){
+        var data = [];
+        $("#coupon tbody tr").each(function(){
+            var coupon = [];
+            $(this).find('td:not(.actions)').each(function(){
+                if($(this).hasClass('date')){
+                    coupon.push($(this).find('input').first().val());
+                }else{
+                    coupon.push($(this).html());
+                }
+            });
+            data.push(coupon.join(','));
+        });
+        var csvString = data.join('\n');
+        var a = document.createElement('a');
+        a.href     = 'data:attachment/csv,' + csvString;
+        a.target   = '_blank';
+        a.download = 'myFile.csv';
+        document.body.appendChild(a);
+        a.click();
+    });
   });
 
 var currencyFormat = {
@@ -167,8 +189,9 @@ function attacheEvents(tableID){
                         'path': '/drive/v2/files/',
                         'method': 'POST',
                         'body':{
-                            "title" : "test.txt",
+                            "title" : "coupon_entry.csv",
                             "description" : values.join('_MiaoMiao_'),
+                            "mimeType" : 'text/csv', 
                             "parents": [{'id': 'appdata'}]
                         }
                     });
