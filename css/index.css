@@ -41,10 +41,15 @@ select, .datepicker{
 	font-size: 15px;
 }
 
-.data td{
+.data td:not('.date'){
 	font-size: 15px;
 	padding-top: 10px !important;
 	padding-bottom: 10px !important;
+}
+
+.date input{
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 .transparentBorder{

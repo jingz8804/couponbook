@@ -310,6 +310,16 @@ function appendNewRowWithData(data, dataid){
         }
     });
     newRow.removeClass('newRow');
+    var expirationDate = data[3];
+    var today = new Date();
+    var dayDiff = Math.floor((expirationDate.getTime() - today.getTime())/(24*3600*1000));
+    if(dayDiff <= 3){
+        newRow.addClass('danger');
+    }else if(dayDiff > 3 && dayDiff <= 7){
+        newRow.addClass('warning');
+    }
+    var backgroundColor = newRow.find('td').first().css('background-color');
+    newRow.find('.datepicker').first().css('background-color', backgroundColor);
 }
 
 function parseDate(dateStr){
