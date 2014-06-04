@@ -9,6 +9,10 @@ $(document).ready(function() {
 	});
 
     $(".add-empty").click(function(){
+        if($("#status").text() !== 'true'){
+            $('#loggin').modal('show');
+            return;
+        }
     	$(this).attr("disabled", true);
     	var tableID = $(this).attr("data-target");
         var newRow = createNewRow(tableID);
@@ -25,6 +29,10 @@ $(document).ready(function() {
     });
 
     $("#export").click(function(){
+        if($("#status").text() !== 'true'){
+            $('#loggin').modal('show');
+            return;
+        }
         var data = [];
         $("#coupon tbody tr").each(function(){
             var coupon = [];

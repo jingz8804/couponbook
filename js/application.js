@@ -27,13 +27,14 @@ function handleClientLoad() {
     filePicker.style.display = 'none';
     if (authResult && !authResult.error) {
       // Access token has been successfully retrieved, requests can be sent to the API.
-      filePicker.style.display = 'block';
-      filePicker.onchange = uploadFile;
+      // filePicker.style.display = 'block';
+      // filePicker.onchange = uploadFile;
       initializeAPI();
-      alert("initialized!");
+      $('#status').text('true');
       // listFilesInApplicationDataFolder();
     } else {
       // No access token could be retrieved, show the button to start the authorization flow.
+      $('#loggin').modal('show');
       authButton.style.display = 'block';
       authButton.onclick = function() {
           gapi.auth.authorize(
