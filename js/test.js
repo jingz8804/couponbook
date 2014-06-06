@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	$(".datepicker" ).datepicker();
+
+    $('.cover .deleteNewRow').on('click.cover', function(){
+          $(this).closest('tr').remove();
+      });
 	
 	$('table').each(function(){ // for each table on the page, do the same
         // listAllCoupons(); // here we assume that the user is logged in. In fact we should check the loggin status here
@@ -222,7 +226,7 @@ function attacheEvents(tableID){
                     });
                 });
     		}
-    	}else{
+    	}else if(!$(this).closest('tr').hasClass('cover')){
             // replace with the drive api
             var row = $(this).closest('tr');
             var id = row.attr('data-pk');
