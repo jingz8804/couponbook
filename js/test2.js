@@ -49,6 +49,9 @@ $(document).ready(function() {
             $(this).attr('id', 'export');
             attachExportEvent();
         });
+        $('#welcome_text').fadeOut('slow', function(){
+            $(this).text('CouponBook helps you keep track of your coupons. Click the button below to export all your coupons.').fadeIn();
+        });
         initializeAPI();
       });
   });
