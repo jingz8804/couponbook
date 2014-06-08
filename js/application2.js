@@ -122,8 +122,11 @@ function handleClientLoad() {
           });
           retrievePageOfFiles(request, result);
         } else {
+          $('.jumbotron').fadeOut('slow');
+          $('#coupon tbody').empty();
+          $('#export').closest('ul').fadeIn('slow');
+          attachExportEvent();
           if(result !== undefined && result.length > 0){
-            $('#coupon tbody').empty();
             var coupons = [];
             result.forEach(function(element){
               if(element !== undefined){
@@ -148,8 +151,8 @@ function handleClientLoad() {
             });
             $('#coupon').editableTableWidget();
             attacheEvents('coupon');
-            $('#coupon tbody').fadeIn('slow');
           }
+          $('#coupon tbody').fadeIn('slow');
           setTimeout(function() {
             $('#loading').modal('hide');
           }, 500);

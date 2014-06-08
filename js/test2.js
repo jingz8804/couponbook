@@ -44,14 +44,14 @@ $(document).ready(function() {
         
         $('#status').text('true');
         $('.add-empty').removeAttr('disabled');
-        $('#login').fadeOut('slow', function(){
-            $(this).text("Export All").fadeIn();
-            $(this).attr('id', 'export');
-            attachExportEvent();
-        });
-        $('#welcome_text').fadeOut('slow', function(){
-            $(this).text('CouponBook helps you keep track of your coupons. Click the button below to export all your coupons.').fadeIn();
-        });
+        // $('#login').fadeOut('slow', function(){
+        //     $(this).text("Export All").fadeIn();
+        //     $(this).attr('id', 'export');
+        //     attachExportEvent();
+        // });
+        // $('#welcome_text').fadeOut('slow', function(){
+        //     $(this).text('CouponBook helps you keep track of your coupons. Click the button below to export all your coupons as CSV files (Currently not supported for IE).').fadeIn();
+        // });
         initializeAPI();
       });
 
@@ -155,7 +155,7 @@ function attacheEvents(tableID){
     	  if(!!newValue.match(/^[\$\-%]+$/)) return false;
     	  return !!newValue.match(/(?=.)^\-?(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)?(\.[0-9]{0,2})?%?$/);
       }else if($(this).hasClass('numbers')){
-        return !!newValue.match(/^(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)+$/);
+          return !!newValue.match(/^(([1-9][0-9]{0,2}(,[0-9]{3})*)|[0-9]+)+$/) && !newValue.match(/^0+$/);
       }
       if ($(this).attr('data-name') !== 'saving' && newValue.length === 0) { 
         return false; // mark cell as invalid if any non-saving cell is empty
