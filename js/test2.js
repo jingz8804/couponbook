@@ -58,9 +58,15 @@ $(document).ready(function() {
     $("th").click(function(){
         var name = $(this).attr('data-name');
         var order = $(this).attr('data-order');
-        var reversed = order === 'asc' ? 'desc' : 'asc';
+        var inOrder = $(this).attr('data-inOrder');
+        if(inOrder !== 'none') {
+            order = inOrder === 'asc' ? 'desc' : 'asc';
+        }
+        $(this).closest('tr').find('th').each(function(){
+            $(this).attr('data-inOrder', 'none');
+        });
+        $(this).attr('data-inOrder', order);
         $('#coupon tbody tr').tsort('td[data-name='+name+']', {data:'value', order: order});
-        $(this).attr('data-order', reversed);
     });
   });
 
@@ -187,6 +193,11 @@ function attacheEvents(tableID){
             var formatedText = accounting.formatMoney(value,numberFormat);
             $(this).html(formatedText);
             $(this).attr("data-value", value);
+        }else if($(this).hasClass('string')){
+            $(this).attr("data-value", newValue);
+        }else if($(this).hasClass('date')){
+            value = $(this).find('input:first').val();
+            $(this).attr("data-value", value);
         }
     	
     	if($(this).closest('tr').hasClass('newRow')){
@@ -274,6 +285,7 @@ function attacheEvents(tableID){
                     value = $(this).attr("data-value");
                     if(!value) value = $(this).html();
                 }
+                $(this).attr("data-value", value);
                 data.push(value);
             });
             gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
@@ -344,13 +356,18 @@ function appendNewRowWithData(data, dataid){
         }else if($(this).hasClass('currency')){
             var formatedText = accounting.formatMoney(data[index],currencyFormat);
             $(this).html(formatedText);
-            $(this).attr("data-value", data[index]);
+            // $(this).attr("data-value", data[index]);
         }else if($(this).hasClass('rate')){
             var formatedText = accounting.formatMoney(data[index],rateFormat);
             $(this).html(formatedText);
-            $(this).attr("data-value", data[index]);
+            // $(this).attr("data-value", data[index]);
         }else{
             $(this).html(data[index]);
+        }
+        if($(this).hasClass('date')){
+            $(this).attr("data-value", $(this).find('input:first').val());
+        }else{
+            $(this).attr("data-value", data[index]);
         }
     });
     newRow.removeClass('newRow');
