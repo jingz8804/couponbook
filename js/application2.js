@@ -123,6 +123,8 @@ function handleClientLoad() {
           retrievePageOfFiles(request, result);
         } else {
           $('.jumbotron').fadeOut('slow');
+          $('#coupon').fadeIn('slow');
+          $('.add-empty').fadeIn('slow');
           $('#coupon tbody').empty();
           $('#export').closest('ul').fadeIn('slow');
           attachExportEvent();

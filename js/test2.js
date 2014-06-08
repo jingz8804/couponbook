@@ -128,9 +128,10 @@ function attachExportEvent(){
             });
             data.push(coupon.join(','));
         });
+        //http://stackoverflow.com/questions/17836273/export-javascript-data-to-csv-file-without-server-interaction
         var csvString = data.join('\n');
         var a = document.createElement('a');
-        a.href     = 'data:attachment/csv,' + csvString;
+        a.href     = 'data:attachment/csv,' + encodeURIComponent(csvString);
         a.target   = '_blank';
         a.download = 'myFile.csv';
         document.body.appendChild(a);
