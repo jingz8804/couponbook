@@ -72,37 +72,37 @@
         <table class="table table-hover" id="coupon">
           <thead>
             <tr>
-              <th class="attribute col-sm-2">Number</th>
-              <th class="attribute col-sm-3">Savings</th>
-              <th class="attribute col-sm-5">Name</th>
-              <th class="attribute col-sm-3">Expiration Date</th>
+              <th class="attribute col-sm-2" style="cursor:pointer" data-name="number" id="sortTest" data-order="asc">Number</th>
+              <th class="attribute col-sm-3" style="cursor:pointer" data-name="saving" data-order="asc">Savings</th>
+              <th class="attribute col-sm-5" style="cursor:pointer" data-name="name" data-order="asc">Name</th>
+              <th class="attribute col-sm-3" style="cursor:pointer" data-name="expiration" data-order="asc">Expiration Date</th>
               <th class="transparentBorder col-sm-3"></th>
             </tr>
           </thead>
           <tbody>
             <tr class="cover">
-              <td class="numbers" data-name="amount">2</td>
-              <td class="string" data-name="saving">Save $0.5</td>
-              <td data-name="description">Barilla pasta</td>
-              <td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date" value="06/30/2014"></td>
+              <td class="numbers" data-name="number" data-value="2">2</td>
+              <td class="string" data-name="saving" data-value="Save $0.5">Save $0.5</td>
+              <td class="string" data-name="name" data-value="Barilla pasta">Barilla pasta</td>
+              <td class="date" data-name="expiration" data-value="06/30/2014"><input type="text" class="datepicker" placeholder="expiration date" value="06/30/2014"></td>
               <td class="transparentBorder actions" data-editable="no">
                 <a href="#" class="deleteNewRow"><span class="glyphicon glyphicon-trash"></span></a>
               </td>
             </tr>
             <tr class="cover">
-              <td class="numbers" data-name="amount">1</td>
-              <td class="string" data-name="saving"></td>
-              <td data-name="description">bulk barn wus 10</td>
-              <td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date" value="06/29/2014"></td>
+              <td class="numbers" data-name="number" data-value="1">1</td>
+              <td class="string" data-name="saving" data-value=""></td>
+              <td class="string" data-name="name" data-value="bulk barn wus 10">bulk barn wus 10</td>
+              <td class="date" data-name="expiration" data-value="06/29/2014"><input type="text" class="datepicker" placeholder="expiration date" value="06/29/2014"></td>
               <td class="transparentBorder actions" data-editable="no">
                 <a href="#" class="deleteNewRow"><span class="glyphicon glyphicon-trash"></span></a>
               </td>
             </tr>
             <tr class="cover">
-              <td class="numbers" data-name="amount">3</td>
-              <td class="string" data-name="saving">Buy one get one free</td>
-              <td data-name="description">Sobeys Broccoli</td>
-              <td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date" value="06/15/2014"></td>
+              <td class="numbers" data-name="number" data-value="3">3</td>
+              <td class="string" data-name="saving" data-value="Buy one get one free">Buy one get one free</td>
+              <td class="string" data-name="name" data-value="Sobeys Broccoli">Sobeys Broccoli</td>
+              <td class="date" data-name="expiration" data-value="06/15/2014"><input type="text" class="datepicker" placeholder="expiration date" value="06/15/2014"></td>
               <td class="transparentBorder actions" data-editable="no">
                 <a href="#" class="deleteNewRow"><span class="glyphicon glyphicon-trash"></span></a>
               </td>
@@ -162,6 +162,7 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/mindmup-editabletable.js"></script>
     <script type="text/javascript" src="js/accounting.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tinysort.min.js"></script>
     <script type="text/javascript" src="js/test2.js"></script>
     <script type="text/javascript" src="js/application2.js"></script>
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>

@@ -54,6 +54,14 @@ $(document).ready(function() {
         });
         initializeAPI();
       });
+
+    $("th").click(function(){
+        var name = $(this).attr('data-name');
+        var order = $(this).attr('data-order');
+        var reversed = order === 'asc' ? 'desc' : 'asc';
+        $('#coupon tbody tr').tsort('td[data-name='+name+']', {data:'value', order: order});
+        $(this).attr('data-order', reversed);
+    });
   });
 
 var currencyFormat = {

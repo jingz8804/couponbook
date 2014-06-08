@@ -141,7 +141,7 @@ function handleClientLoad() {
               }
             });
             coupons.sort(function(a, b){
-              return b[3] - a[3];
+              return a[3] - b[3];
             });
             coupons.forEach(function(element){
               appendNewRowWithData(element, element[4]);
