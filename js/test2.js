@@ -29,7 +29,8 @@ $(document).ready(function() {
         $('#'+tableID+' .newRow .deleteNewRow').click(function(){
   		  $(this).closest('tr').remove();
   		  $('.add-empty[data-target='+tableID+']').removeAttr("disabled");
-  	  });
+  	    });
+        $('#'+tableID+' .newRow td').first().focus();
     });
 
     var $modal = $('#loading').modal({
@@ -55,20 +56,29 @@ $(document).ready(function() {
         initializeAPI();
       });
 
+    attachSortingEvent();
+  });
+
+function attachSortingEvent(){
     $("th").click(function(){
         var name = $(this).attr('data-name');
         var order = $(this).attr('data-order');
-        var inOrder = $(this).attr('data-inOrder');
+        var inOrder = $(this).attr('data-inorder');
         if(inOrder !== 'none') {
             order = inOrder === 'asc' ? 'desc' : 'asc';
         }
         $(this).closest('tr').find('th').each(function(){
-            $(this).attr('data-inOrder', 'none');
+            $(this).attr('data-inorder', 'none');
         });
-        $(this).attr('data-inOrder', order);
-        $('#coupon tbody tr').tsort('td[data-name='+name+']', {data:'value', order: order});
+        $(this).attr('data-inorder', order);
+        if(name === 'saving' || name === 'name'){
+            // must use data-value as an attribute. otherwise it will not work. don't know why
+            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value',order: order, forceStrings: true});
+        }else{
+            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value',order: order});
+        }
     });
-  });
+}
 
 var currencyFormat = {
     symbol: "$",
@@ -291,7 +301,9 @@ function attacheEvents(tableID){
                 $(this).attr("data-value", value);
                 data.push(value);
             });
-
+            $('th').off('click');
+            $('td').off('tsort');
+            attachSortingEvent();
             gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
     	}
     });

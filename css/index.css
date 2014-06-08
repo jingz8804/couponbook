@@ -56,6 +56,9 @@ select, .datepicker{
 	background-color: white !important;
 	border-color: transparent !important;
 }
+th.transparentBorder{
+	border-top-width: 1px !important;
+}
 
 .data th:not(.transparentBorder), .data td:not(.transparentBorder){
 	border:1px solid #ddd !important;
