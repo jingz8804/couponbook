@@ -257,6 +257,8 @@ function attacheEvents(tableID){
                     console.log(resp); 
                     gd_updateFile(resp.id, 'appdata', values.join('_MiaoMiao_'));
 
+                    backgroundColorConfiguration(currentRow, parseDate(values[3]), new Date())
+
                     currentRow.removeClass('newRow');
                     currentRow.find('td').each(function(){
                         $(this).attr('data-pk', resp.id);
@@ -373,14 +375,8 @@ function appendNewRowWithData(data, dataid){
     newRow.removeClass('newRow');
     var expirationDate = data[3];
     var today = new Date();
-    var dayDiff = Math.floor((expirationDate.getTime() - today.getTime())/(24*3600*1000));
-    if(dayDiff <= 3){
-        newRow.addClass('danger');
-    }else if(dayDiff > 3 && dayDiff <= 7){
-        newRow.addClass('warning');
-    }
-    var backgroundColor = newRow.find('td').first().css('background-color');
-    newRow.find('.datepicker').first().css('background-color', backgroundColor);
+
+    backgroundColorConfiguration(newRow, expirationDate, today)
 }
 
 function parseDate(dateStr){
@@ -394,4 +390,15 @@ function parseDate(dateStr){
 function showProgressBar(){
       var $modal = $("#loading");
       $modal.modal('show');
+}
+
+function backgroundColorConfiguration(row, expirationDate, today){
+    var dayDiff = Math.floor((expirationDate.getTime() - today.getTime())/(24*3600*1000));
+    if(dayDiff <= 3){
+        row.addClass('danger');
+    }else if(dayDiff > 3 && dayDiff <= 7){
+        row.addClass('warning');
+    }
+    var backgroundColor = row.find('td').first().css('background-color');
+    row.find('.datepicker').first().css('background-color', backgroundColor);
 }
