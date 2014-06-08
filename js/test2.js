@@ -283,6 +283,7 @@ function attacheEvents(tableID){
                     value = $(this).find('select:first').val();
                 }else if($(this).hasClass('date')){
                     value = $(this).find('input:first').val();
+                    backgroundColorConfiguration(row, parseDate(value), new Date())
                 }else{
                     value = $(this).attr("data-value");
                     if(!value) value = $(this).html();
@@ -290,6 +291,7 @@ function attacheEvents(tableID){
                 $(this).attr("data-value", value);
                 data.push(value);
             });
+
             gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
     	}
     });
@@ -394,6 +396,7 @@ function showProgressBar(){
 
 function backgroundColorConfiguration(row, expirationDate, today){
     var dayDiff = Math.floor((expirationDate.getTime() - today.getTime())/(24*3600*1000));
+    row.removeClass();
     if(dayDiff <= 3){
         row.addClass('danger');
     }else if(dayDiff > 3 && dayDiff <= 7){
