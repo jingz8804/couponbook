@@ -135,7 +135,7 @@ function handleClientLoad() {
                 var description = element.description;
                 var data = description.split('_MiaoMiao_');
                 if(data.length == 4){
-                  data[3] = parseDate(data[3])
+                  // data[3] = parseDate(data[3])
                   data[4] = element.id;
                   coupons.push(data);
                 }else{
@@ -146,7 +146,7 @@ function handleClientLoad() {
               }
             });
             coupons.sort(function(a, b){
-              return a[3] - b[3];
+              return parseDate(a[3]) - parseDate(b[3]);
             });
             coupons.forEach(function(element){
               appendNewRowWithData(element, element[4]);

@@ -45,14 +45,6 @@ $(document).ready(function() {
         
         $('#status').text('true');
         $('.add-empty').removeAttr('disabled');
-        // $('#login').fadeOut('slow', function(){
-        //     $(this).text("Export All").fadeIn();
-        //     $(this).attr('id', 'export');
-        //     attachExportEvent();
-        // });
-        // $('#welcome_text').fadeOut('slow', function(){
-        //     $(this).text('CouponBook helps you keep track of your coupons. Click the button below to export all your coupons as CSV files (Currently not supported for IE).').fadeIn();
-        // });
         initializeAPI();
       });
 
@@ -175,16 +167,16 @@ function attacheEvents(tableID){
 
     $("#"+tableID+' td').on('change', function(evt, newValue) {
       // the validation is not firing for the datepicker so we have to do it here.
-      if($(this).hasClass('date')){
-    	  var datepicker = $(this).find('input:first');
-        if(datepicker.val()!==""){
-            datepicker.removeClass('error');
-        }else{
-            $(this).focus();
-            datepicker.addClass('error');
-            return;
-        }
-      }
+      // if($(this).hasClass('date')){
+    	 //  var datepicker = $(this).find('input:first');
+      //   if(datepicker.val()!==""){
+      //       datepicker.removeClass('error');
+      //   }else{
+      //       $(this).focus();
+      //       datepicker.addClass('error');
+      //       return;
+      //   }
+      // }
 
       // for currency and percentage, change the display but save the real value in an attribute data-value
         if($(this).hasClass('currency')){
@@ -208,6 +200,7 @@ function attacheEvents(tableID){
             $(this).attr("data-value", newValue);
         }else if($(this).hasClass('date')){
             value = $(this).find('input:first').val();
+            if(value === '') value = '01/01/4000';
             $(this).attr("data-value", value);
         }
     	
@@ -229,7 +222,8 @@ function attacheEvents(tableID){
                 }else{
                     value = $(this).html();
                 }
-                if($(this).attr('data-name') !== 'saving' && (value === '' || value === undefined)) return true;
+                if(($(this).attr('data-name') !== 'saving' && $(this).attr('data-name') !== 'expiration') 
+                    && (value === '' || value === undefined)) return true;
                 return false;
             });
 
@@ -243,6 +237,7 @@ function attacheEvents(tableID){
                     value = $(this).find('select:first').val();
                 }else if($(this).hasClass('date')){
                     value = $(this).find('input:first').val();
+                    if(value === '') value = '01/01/4000';
                 }else if($(this).hasClass('currency') || $(this).hasClass('rate')){
                     value = $(this).attr("data-value");
                 }else{
@@ -294,6 +289,7 @@ function attacheEvents(tableID){
                     value = $(this).find('select:first').val();
                 }else if($(this).hasClass('date')){
                     value = $(this).find('input:first').val();
+                    if(value === '') value = '01/01/4000';
                     backgroundColorConfiguration(row, parseDate(value), new Date())
                 }else{
                     value = $(this).attr("data-value");
@@ -369,7 +365,9 @@ function appendNewRowWithData(data, dataid){
         if($(this).hasClass('select')){
             $(this).find('select').first().val(data[index]);
         }else if($(this).hasClass('date')){
-            $(this).find('input').first().datepicker('setDate', data[index]);
+            if(data[index] !== '01/01/4000'){
+                $(this).find('input').first().datepicker('setDate', data[index]);
+            }
         }else if($(this).hasClass('currency')){
             var formatedText = accounting.formatMoney(data[index],currencyFormat);
             $(this).html(formatedText);
@@ -382,13 +380,17 @@ function appendNewRowWithData(data, dataid){
             $(this).html(data[index]);
         }
         if($(this).hasClass('date')){
-            $(this).attr("data-value", $(this).find('input:first').val());
+            if(data[index] !== '01/01/4000') $(this).attr("data-value", $(this).find('input:first').val());
+            else{
+                $(this).attr("data-value", '01/01/4000');
+                $(this).find('input:first').attr('placeholder','Never Expire');
+            }
         }else{
             $(this).attr("data-value", data[index]);
         }
     });
     newRow.removeClass('newRow');
-    var expirationDate = data[3];
+    var expirationDate = parseDate(data[3]);
     var today = new Date();
 
     backgroundColorConfiguration(newRow, expirationDate, today)
