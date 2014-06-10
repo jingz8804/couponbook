@@ -65,9 +65,17 @@ function attachSortingEvent(){
         $(this).attr('data-inorder', order);
         if(name === 'saving' || name === 'name'){
             // must use data-value as an attribute. otherwise it will not work. don't know why
-            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value',order: order, forceStrings: true});
+            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value', order: order, forceStrings: true});
+        }else if(name === 'expiration'){
+            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value', sortFunction: function(a, b){
+                // by looking at the chrome debugger we know that a.s and b.s are arrays
+                // and if we provide order as an attribute, it will override the sort function, however we can use it
+                // inside the function to guide the sorting order.
+                    return order === 'asc' ? parseDate(a.s[0]) - parseDate(b.s[0]) : parseDate(b.s[0]) - parseDate(a.s[0]);
+                }
+            });
         }else{
-            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value',order: order});
+            $('#coupon tbody tr').tsort('td[data-name='+name+']', {attr:'data-value', order: order});
         }
     });
 }
