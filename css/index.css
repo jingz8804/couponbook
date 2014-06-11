@@ -34,7 +34,11 @@ select, .datepicker{
 .select, .date{
 	padding: 0 !important;
 }
-	
+
+.date input{
+	padding-left: 8px;
+}
+
 .data th{
 	padding-top: 15px !important;
 	font-size: 20px;

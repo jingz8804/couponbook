@@ -124,9 +124,11 @@ function handleClientLoad() {
         } else {
           $('.jumbotron').fadeOut('slow');
           $('#coupon').fadeIn('slow');
+          $('.submit').fadeIn('slow');
           $('.add-empty').fadeIn('slow');
           $('#coupon tbody').empty();
           $('#export').closest('ul').fadeIn('slow');
+          $('#today').closest('ul').fadeIn('slow');
           attachExportEvent();
           if(result !== undefined && result.length > 0){
             var coupons = [];

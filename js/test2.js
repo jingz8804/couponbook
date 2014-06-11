@@ -33,6 +33,8 @@ $(document).ready(function() {
         $('#'+tableID+' .newRow td').first().focus();
     });
 
+    $("#today").text('Today is ' + moment().format('MM/DD/YYYY'));
+
     var $modal = $('#loading').modal({
         backdrop: 'static',
         show: false
