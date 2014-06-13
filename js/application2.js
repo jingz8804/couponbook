@@ -27,7 +27,7 @@ function handleClientLoad() {
       showProgressBar();
     } else {
       // No access token could be retrieved, show the button to start the authorization flow.
-      $("#login").click(function(){
+      $(".login").click(function(){
         gapi.auth.authorize(
               {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
               handleAuthResult);
@@ -122,7 +122,7 @@ function handleClientLoad() {
           });
           retrievePageOfFiles(request, result);
         } else {
-          $('.jumbotron').fadeOut('slow');
+          $('.carousel').fadeOut('slow');
           $('#coupon').fadeIn('slow');
           $('.submit').fadeIn('slow');
           $('.add-empty').fadeIn('slow');
