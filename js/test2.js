@@ -348,7 +348,7 @@ function createNewRow(tableID){
         newRow += '<td class="numbers" data-name="number"></td>';
         newRow += '<td class="string" data-name="saving"></td>';
         newRow += '<td class="string" data-name="name"></td>';
-        newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date"></td>';
+        newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="Never Expire"></td>';
     }
 //    newRow += '<td class="date" data-name="date"><input type="text" class="datepicker" placeholder="date of birth"></td>'; 
     newRow += '<td class="transparentBorder actions" data-editable="no">' +
