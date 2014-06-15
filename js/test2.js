@@ -13,10 +13,10 @@ $(document).ready(function() {
 	});
 
     $(".add-empty").click(function(){
-        if($("#status").text() !== 'true'){
-            $('#loggin').modal('show');
-            return;
-        }
+        // if($("#status").text() !== 'true'){
+        //     $('#loggin').modal('show');
+        //     return;
+        // }
     	$(this).attr("disabled", true);
     	var tableID = $(this).attr("data-target");
         var newRow = createNewRow(tableID);
@@ -463,9 +463,9 @@ function showProgressBar(){
 function backgroundColorConfiguration(row, expirationDate, today){
     var dayDiff = Math.floor((expirationDate.getTime() - today.getTime())/(24*3600*1000));
     row.removeClass();
-    if(dayDiff <= 3){
+    if(dayDiff < 0){
         row.addClass('danger');
-    }else if(dayDiff > 3 && dayDiff <= 7){
+    }else if(dayDiff >=0 && dayDiff <= 7){
         row.addClass('warning');
     }
     var backgroundColor = row.find('td').first().css('background-color');
