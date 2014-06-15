@@ -51,7 +51,33 @@ $(document).ready(function() {
       });
 
     attachSortingEvent();
+
+    setDefaultDateAndBackground();
   });
+
+function setDefaultDateAndBackground(){
+    var today = new Date();
+    $('.date').each(function(index){
+        var date = new Date();
+        if(index < 3){
+            if(index == 0){
+                date.setDate(today.getDate() + 2);
+            }else if(index == 1){
+                date.setDate(today.getDate() + 5);
+            }else{
+                date.setDate(today.getDate() + 8);
+            }
+            var dateStr = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+            $(this).find('input:first').datepicker('setDate', dateStr);
+            $(this).attr('data-value', dateStr);
+        }else{
+            date = new Date(4000, 0, 1);
+            $(this).attr('data-value', '01/01/4000');
+        }
+        var row = $(this).closest('tr');
+        backgroundColorConfiguration(row, date, today);
+    });
+}
 
 function attachSortingEvent(){
     $("th").click(function(){
@@ -143,6 +169,13 @@ function attachExportEvent(){
 
 
 function attacheEvents(tableID){
+    $('table tbody').find('tr').first().find('td').first().focus();
+
+    $('table tbody').find('tr').hover(function(){
+        var backgroundColor = $(this).find('td').first().css('background-color');
+        $(this).find('.datepicker').first().css('background-color', backgroundColor);
+    });
+    
 	$("#"+tableID+' .datepicker').datepicker();
 	
 	$("#"+tableID+' .select').focus(function(){
@@ -323,16 +356,24 @@ function attacheEvents(tableID){
 	      
           $dataid = $(e.relatedTarget).attr('data-id');
 	      $(this).find('.modal-footer #confirm').data('dataid', $dataid);
+          var $row = $(e.relatedTarget).closest('tr');
+          $(this).find('.modal-footer #confirm').data('datarow', $row);
 	  });
 	
 	  // Form confirm (yes/ok) handler, submits form
 	  $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
-	      var couponid = $(this).data('dataid');
+	    var couponid = $(this).data('dataid');
           // then we delete the file and close the modal
-          deleteFile(couponid, function(file){
-            $('#coupon').find('tr[data-pk='+couponid+']').first().remove();
+        if(couponid !== '' && couponid !== undefined){
+            deleteFile(couponid, function(file){
+                $('#coupon').find('tr[data-pk='+couponid+']').first().remove();
+                $('#confirmDelete').modal('hide');
+              });
+        }else{
+            $(this).data('datarow').remove();
             $('#confirmDelete').modal('hide');
-          });
+        }
+          
 	  });
 }
 

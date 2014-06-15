@@ -122,9 +122,9 @@ function handleClientLoad() {
           });
           retrievePageOfFiles(request, result);
         } else {
-          $('.carousel').fadeOut('slow');
-          $('#coupon').fadeIn('slow');
-          $('.submit').fadeIn('slow');
+          $('.jumbotron').fadeOut('slow');
+          // $('#coupon').fadeIn('slow');
+          // $('.submit').fadeIn('slow');
           $('.add-empty').fadeIn('slow');
           $('#coupon tbody').empty();
           $('#export').closest('ul').fadeIn('slow');
