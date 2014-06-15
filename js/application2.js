@@ -135,23 +135,26 @@ function handleClientLoad() {
             result.forEach(function(element){
               if(element !== undefined){
                 var description = element.description;
-                var data = description.split('_MiaoMiao_');
-                if(data.length == 4){
-                  // data[3] = parseDate(data[3])
-                  data[4] = element.id;
-                  coupons.push(data);
-                }else{
-                  deleteFile(element.id, function(resp){
-                    console.log(resp);
-                  })
-                }
+                // var data = description.split('_MiaoMiao_');
+                var coupon = JSON.parse(description);
+                coupon.pk = element.id;
+                coupons.push(coupon);
+                // if(data.length == 4){
+                //   // data[3] = parseDate(data[3])
+                //   data[4] = element.id;
+                //   coupons.push(coupon);
+                // }else{
+                //   deleteFile(element.id, function(resp){
+                //     console.log(resp);
+                //   })
+                // }
               }
             });
             coupons.sort(function(a, b){
-              return parseDate(a[3]) - parseDate(b[3]);
+              return parseDate(a.expiration) - parseDate(b.expiration);
             });
             coupons.forEach(function(element){
-              appendNewRowWithData(element, element[4]);
+              appendNewRowWithData(element, element.pk);
             });
             $('#coupon').editableTableWidget();
             attacheEvents('coupon');

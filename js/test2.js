@@ -252,7 +252,6 @@ function attacheEvents(tableID){
     		// if everything works out, remove the newRow class on the row
     		
     		var currentRow = $(this).closest('tr');
-
             // cell value validation
             var failed = currentRow.find('td:not(.actions)').filter(function(){
                 var value;
@@ -272,10 +271,10 @@ function attacheEvents(tableID){
 
             if(failed.length > 0) return;
 
-            // validation completed, retrieve value
-            var values = [];
+            var coupon = new Coupon();
             currentRow.find('td:not(.actions)').each(function(){
                 var value;
+                var data_name = $(this).attr('data-name');
                 if($(this).hasClass('select')){
                     value = $(this).find('select:first').val();
                 }else if($(this).hasClass('date')){
@@ -286,7 +285,7 @@ function attacheEvents(tableID){
                 }else{
                     value = $(this).html();
                 }
-                values.push(value);
+                coupon[data_name] = value;
             });
 
             // here we should replace it with the drive api function
@@ -297,16 +296,17 @@ function attacheEvents(tableID){
                     'method': 'POST',
                     'body':{
                         "title" : "coupon_entry.csv",
-                        "description" : values.join('_MiaoMiao_'),
+                        "description" : JSON.stringify(coupon),
                         "mimeType" : 'text/csv', 
                         "parents": [{'id': 'appdata'}]
                     }
                 });
                 request.execute(function(resp) { 
                     console.log(resp); 
-                    gd_updateFile(resp.id, 'appdata', values.join('_MiaoMiao_'));
+                    // gd_updateFile(resp.id, 'appdata', values.join('_MiaoMiao_'));
+                    gd_updateFile(resp.id, 'appdata', JSON.stringify(coupon));
 
-                    backgroundColorConfiguration(currentRow, parseDate(values[3]), new Date())
+                    backgroundColorConfiguration(currentRow, parseDate(coupon.expiration), new Date())
 
                     currentRow.removeClass('newRow');
                     currentRow.find('td').each(function(){
@@ -319,15 +319,17 @@ function attacheEvents(tableID){
                     var actionTD = currentRow.find('td.actions').first();
                     actionTD.empty();
                     actionTD.append(deleteButton);
-                    $('a[data-target='+tableID+']').focus(); // in case they need to add another
+                    // $('a[data-target='+tableID+']').focus(); // in case they need to add another
                 });
             });
     	}else if(!$(this).closest('tr').hasClass('cover')){
             // replace with the drive api
+            var coupon = new Coupon();
             var row = $(this).closest('tr');
             var id = row.attr('data-pk');
-            var data = [];
+            
             row.find('td:not(.actions)').each(function(index){
+                var data_name = $(this).attr('data-name'); 
                 if($(this).hasClass('select')){
                     value = $(this).find('select:first').val();
                 }else if($(this).hasClass('date')){
@@ -339,12 +341,13 @@ function attacheEvents(tableID){
                     if(!value) value = $(this).html();
                 }
                 $(this).attr("data-value", value);
-                data.push(value);
+                coupon[data_name] = value;
             });
             $('th').off('click');
             $('td').off('tsort');
             attachSortingEvent();
-            gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
+            // gd_updateFile(id, 'appdata', data.join('_MiaoMiao_'));
+            gd_updateFile(id, 'appdata', JSON.stringify(coupon));
     	}
     });
     
@@ -379,19 +382,12 @@ function attacheEvents(tableID){
 
 function createNewRow(tableID){
     var newRow = '<tr class="newRow">';
-    // if(tableID === 'coupon'){
-    // 	newRow += '<td data-name="description"></td>';
-    //     newRow += '<td class="numbers" data-name="amount"></td>';
-    //     newRow += '<td class="string" data-name="saving"></td>';
-    //     newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="expiration date"></td>';
-    // }
     if(tableID === 'coupon'){
         newRow += '<td class="numbers" data-name="number"></td>';
-        newRow += '<td class="string" data-name="saving"></td>';
         newRow += '<td class="string" data-name="name"></td>';
+        newRow += '<td class="string" data-name="saving"></td>';
         newRow += '<td class="date" data-name="expiration"><input type="text" class="datepicker" placeholder="Never Expire"></td>';
-    }
-//    newRow += '<td class="date" data-name="date"><input type="text" class="datepicker" placeholder="date of birth"></td>'; 
+    } 
     newRow += '<td class="transparentBorder actions" data-editable="no">' +
     '<a href="#"><span class="glyphicon glyphicon-trash deleteNewRow"></span></a>'+ // must have href to enable the focus function
     '</td>';
@@ -413,22 +409,13 @@ function appendNewRowWithData(data, dataid){
     $(".datepicker" ).datepicker();
     newRow.attr('data-pk', dataid);
     newRow.find('td:not(.actions)').each(function(index){
-        if($(this).hasClass('select')){
-            $(this).find('select').first().val(data[index]);
-        }else if($(this).hasClass('date')){
-            if(data[index] !== '01/01/4000'){
-                $(this).find('input').first().datepicker('setDate', data[index]);
+        var data_name = $(this).attr('data-name');
+        if(data_name === 'expiration'){
+            if(data.expiration !== '01/01/4000'){
+                $(this).find('input').first().datepicker('setDate', data.expiration);
             }
-        }else if($(this).hasClass('currency')){
-            var formatedText = accounting.formatMoney(data[index],currencyFormat);
-            $(this).html(formatedText);
-            // $(this).attr("data-value", data[index]);
-        }else if($(this).hasClass('rate')){
-            var formatedText = accounting.formatMoney(data[index],rateFormat);
-            $(this).html(formatedText);
-            // $(this).attr("data-value", data[index]);
         }else{
-            $(this).html(data[index]);
+            $(this).html(data[data_name]);
         }
         if($(this).hasClass('date')){
             if(data[index] !== '01/01/4000') $(this).attr("data-value", $(this).find('input:first').val());
@@ -437,11 +424,11 @@ function appendNewRowWithData(data, dataid){
                 $(this).find('input:first').attr('placeholder','Never Expire');
             }
         }else{
-            $(this).attr("data-value", data[index]);
+            $(this).attr("data-value", data[data_name]);
         }
     });
     newRow.removeClass('newRow');
-    var expirationDate = parseDate(data[3]);
+    var expirationDate = parseDate(data.expiration);
     var today = new Date();
 
     backgroundColorConfiguration(newRow, expirationDate, today)
