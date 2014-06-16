@@ -61,7 +61,7 @@ function setDefaultDateAndBackground(){
         var date = new Date();
         if(index < 3){
             if(index == 0){
-                date.setDate(today.getDate() + 2);
+                date.setDate(today.getDate() - 1);
             }else if(index == 1){
                 date.setDate(today.getDate() + 5);
             }else{
@@ -140,10 +140,6 @@ var rateFormat = {
 
 function attachExportEvent(){
     $("#export").click(function(){
-        if($("#status").text() !== 'true'){
-            $('#loggin').modal('show');
-            return;
-        }
         var data = [];
         $("#coupon tbody tr").each(function(){
             var coupon = [];
