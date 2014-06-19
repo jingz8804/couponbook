@@ -206,16 +206,26 @@ function attacheEvents(tableID){
 
     $("#"+tableID+' td').on('change', function(evt, newValue) {
       // the validation is not firing for the datepicker so we have to do it here.
-      // if($(this).hasClass('date')){
-    	 //  var datepicker = $(this).find('input:first');
-      //   if(datepicker.val()!==""){
-      //       datepicker.removeClass('error');
-      //   }else{
-      //       $(this).focus();
-      //       datepicker.addClass('error');
-      //       return;
-      //   }
-      // }
+      if($(this).hasClass('date')){
+    	  var datepicker = $(this).find('input:first');
+          var dateStr = datepicker.val();
+        if(moment(dateStr,'MM/DD/YYYY').isValid()){
+            var date = moment(dateStr,'MM/DD/YYYY');
+            var dateMax = moment('2999-12-31');
+            var dateMin = moment('2014-01-01');
+
+            if(date.diff(dateMin) < 0 || date.diff(dateMax) > 0) {
+                $(this).focus();
+                datepicker.addClass('error');
+                return;
+            } 
+            datepicker.removeClass('error');
+        }else{
+            $(this).focus();
+            datepicker.addClass('error');
+            return;
+        }
+      }
 
       // for currency and percentage, change the display but save the real value in an attribute data-value
         if($(this).hasClass('currency')){
