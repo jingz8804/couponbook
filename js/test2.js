@@ -424,7 +424,7 @@ function appendNewRowWithData(data, dataid){
             $(this).html(data[data_name]);
         }
         if($(this).hasClass('date')){
-            if(data[index] !== '01/01/4000') $(this).attr("data-value", $(this).find('input:first').val());
+            if(data.expiration !== '01/01/4000') $(this).attr("data-value", $(this).find('input:first').val());
             else{
                 $(this).attr("data-value", '01/01/4000');
                 $(this).find('input:first').attr('placeholder','Never Expire');
